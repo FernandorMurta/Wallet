@@ -5,7 +5,7 @@ import fernando.murta.wallet.util.LoggerMessage;
 
 /**
  * @author Fernando Murta
- * @version 0.0.4 - BETA
+ * @version 0.0.1 - BETA
  */
 public abstract class CoreException extends Exception {
 

@@ -2,6 +2,7 @@ package fernando.murta.wallet.rest.player;
 
 
 import fernando.murta.wallet.model.player.PlayerDTO;
+import fernando.murta.wallet.util.LoggerMessage;
 import fernando.murta.wallet.util.Response;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 
 /**
  * @author Fernando Murta
@@ -47,8 +49,11 @@ public class PlayerController {
      * @return new Player Created
      */
     @ApiOperation(value = "Generate a new Player to use the Wallet")
-    @PostMapping(produces = "application/json", consumes = "application/json")
+    @PostMapping(produces = "application/json;charset=UTF-8", consumes = "application/json;charset=UTF-8")
     public ResponseEntity<Response<PlayerDTO>> createPlayer(@RequestBody PlayerDTO player) {
+
+        LoggerMessage.info(LoggerMessage._REQUEST_BODY, player);
+
         try {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
@@ -67,8 +72,13 @@ public class PlayerController {
      * @return Info about that player if are found
      */
     @ApiOperation(value = "Find a Player by his ID")
-    @GetMapping(value = "/{id}", produces = "application/json")
+    @GetMapping(value = "/{id}", produces = "application/json;charset=UTF-8")
     public ResponseEntity<Response<PlayerDTO>> findPlayerById(@PathVariable(value = "id") Long id) {
+
+        LoggerMessage.params(
+                Collections.singletonList(
+                        new LoggerMessage.Params("PathVariable -> Player ID", id.toString())));
+
         try {
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -86,8 +96,13 @@ public class PlayerController {
      * @return Balance of the Player with that ID
      */
     @ApiOperation(value = "Return the Balance of a Player")
-    @GetMapping("/balance")
+    @GetMapping(value = "/balance", produces = "application/json;charset=UTF-8")
     public ResponseEntity<Response<BigDecimal>> getBalanceOfPlayer(@RequestParam(value = "player") Long id) {
+
+        LoggerMessage.params(
+                Collections.singletonList(
+                        new LoggerMessage.Params("Player ID", id.toString())));
+
         try {
             return ResponseEntity
                     .status(HttpStatus.OK)

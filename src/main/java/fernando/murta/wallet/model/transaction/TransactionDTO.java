@@ -26,15 +26,15 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class TransactionDTO extends AbstractDTO {
 
-    @NotNull
+    @NotNull(message = "The Transaction Code is Required")
     private UUID transaction;
 
-    @NotNull
+    @NotNull(message = "The value of the Transaction is Required")
     @Digits(integer = 9, fraction = 2, message = "Invalid Format of Balance. Limit of Fraction Value is 2")
-    @DecimalMin(value = "0.0", inclusive = false)
+    @DecimalMin(value = "0.0", inclusive = false, message = "The value of the Transaction must be more than 0")
     private BigDecimal value;
 
-    @NotNull
+    @NotNull(message = "The Transaction Type is Required")
     private TransactionType transactionType;
 
     private PlayerDTO player;

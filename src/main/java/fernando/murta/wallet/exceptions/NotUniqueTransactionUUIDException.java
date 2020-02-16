@@ -1,10 +1,12 @@
 package fernando.murta.wallet.exceptions;
 
+import fernando.murta.wallet.core.CoreException;
+
 /**
  * @author Fernando Murta
  * @version 0.0.2
  */
-public class NotUniqueTransactionUUIDException extends Exception {
+public class NotUniqueTransactionUUIDException extends CoreException {
 
     private static final String _DEFAULT_MSG = "That UUID already have one Transaction registered!";
 

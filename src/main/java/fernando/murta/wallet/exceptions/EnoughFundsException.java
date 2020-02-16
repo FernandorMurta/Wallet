@@ -1,10 +1,12 @@
 package fernando.murta.wallet.exceptions;
 
+import fernando.murta.wallet.core.CoreException;
+
 /**
  * @author Fernando Murta
  * @version 0.0.2
  */
-public class EnoughFundsException extends Exception {
+public class EnoughFundsException extends CoreException {
 
     private static final String _DEFAULT_MSG = "Not Enough Funds to this operation!";
 

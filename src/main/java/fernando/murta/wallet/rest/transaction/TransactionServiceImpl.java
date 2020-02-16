@@ -5,14 +5,19 @@ import fernando.murta.wallet.exceptions.EnoughFundsException;
 import fernando.murta.wallet.exceptions.InvalidArgumentsException;
 import fernando.murta.wallet.exceptions.InvalidTransactionTypeException;
 import fernando.murta.wallet.exceptions.NotUniqueTransactionUUIDException;
+import fernando.murta.wallet.model.player.Player;
+import fernando.murta.wallet.model.player.PlayerDTO;
 import fernando.murta.wallet.model.transaction.Transaction;
 import fernando.murta.wallet.model.transaction.TransactionDTO;
 import fernando.murta.wallet.model.transaction.TransactionType;
 import fernando.murta.wallet.persistence.transaction.TransactionRepository;
 import fernando.murta.wallet.rest.player.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -103,6 +108,23 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionDTO;
     }
 
+    /**
+     * Method to list the Transactions of a Player, using the Player as parameter and TransactionType
+     *
+     * @param playerId        The player with a ID
+     * @param transactionType The list with what type of TransactionType will be used as parameter
+     * @param pageable        Pageable with Page, Quantity and Sort information to list
+     * @return A Page List with the Transactions of the Player
+     * @throws PlayerNotFoundException if the Id of Player sent dont find any player at the system
+     */
+    public Page<Transaction> findAllWithParameters(Long playerId, List<TransactionType> transactionType, Pageable pageable)
+            throws PlayerNotFoundException {
+
+        Player player = PlayerDTO.toEntity(this.playerService.findPlayerById(playerId));
+
+        return this.transactionRepository.findAllByPlayerAndTransactionTypeIn(player, transactionType, pageable);
+    }
+
 
     /**
      * Method to verify if the Type of Transaction in the request was the same accepted from the method
@@ -121,7 +143,6 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     /**
-     * 232/5000
      * The method checks whether the ID sent in the parameter was the same of the player in transaction's DTO.
      * If the transaction has not been defined with a player ID or the parameter is the same as the transaction,
      * it finds a player by the ID received in the Parameter

@@ -5,7 +5,13 @@ import fernando.murta.wallet.exceptions.EnoughFundsException;
 import fernando.murta.wallet.exceptions.InvalidArgumentsException;
 import fernando.murta.wallet.exceptions.InvalidTransactionTypeException;
 import fernando.murta.wallet.exceptions.NotUniqueTransactionUUIDException;
+import fernando.murta.wallet.model.transaction.Transaction;
 import fernando.murta.wallet.model.transaction.TransactionDTO;
+import fernando.murta.wallet.model.transaction.TransactionType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * @author Fernando Murta
@@ -50,4 +56,17 @@ public interface TransactionService {
     TransactionDTO creditValueOfPlayer(Long idOfPlayer, TransactionDTO transactionDTO)
             throws InvalidTransactionTypeException, InvalidArgumentsException,
             PlayerNotFoundException, NotUniqueTransactionUUIDException;
+
+
+    /**
+     * Method to list the Transactions of a Player, using the Player as parameter and TransactionType
+     *
+     * @param playerId        The player with a ID
+     * @param transactionType The type of TransactionType will be used as parameter
+     * @param pageable        Pageable with Page, Quantity and Sort information to list
+     * @return A Page List with the Transactions of the Player
+     * @throws PlayerNotFoundException if the Id of Player sent dont find any player at the system
+     */
+    Page<Transaction> findAllWithParameters(Long playerId, List<TransactionType> transactionType, Pageable pageable)
+            throws PlayerNotFoundException;
 }
