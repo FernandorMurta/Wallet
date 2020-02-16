@@ -19,9 +19,20 @@ import java.util.Date;
 @JsonInclude(Include.NON_NULL)
 public abstract class AbstractDTO implements Serializable {
 
-	private Long id;
+    private Long id;
 
-	private Date createdAt;
+    private Date createdAt;
 
-	private Date updatedAt;
+    private Date updatedAt;
+
+    /**
+     * Constructor without the updateAt
+     *
+     * @param id        id
+     * @param createdAt Date when was created
+     */
+    protected AbstractDTO(Long id, Date createdAt) {
+        this.id = id;
+        this.createdAt = createdAt;
+    }
 }
