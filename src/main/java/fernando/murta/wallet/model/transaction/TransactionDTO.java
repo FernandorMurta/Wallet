@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
@@ -23,10 +26,15 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class TransactionDTO extends AbstractDTO {
 
+    @NotNull
     private UUID transaction;
 
+    @NotNull
+    @Digits(integer = 9, fraction = 2, message = "Invalid Format of Balance. Limit of Fraction Value is 2")
+    @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal value;
 
+    @NotNull
     private TransactionType transactionType;
 
     private PlayerDTO player;

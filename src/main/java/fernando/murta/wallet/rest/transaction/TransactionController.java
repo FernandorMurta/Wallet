@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
+
+
 /**
  * @author Fernando Murta
  * @version 0.0.2
@@ -45,9 +48,9 @@ public class TransactionController {
      * @return The transaction Information after the execution
      */
     @ApiOperation(value = "Create a new Transaction to debit value from one player")
-    @PostMapping(value = "/debit")
+    @PostMapping(value = "/debit", produces = "application/json", consumes = "application/json")
     public ResponseEntity<Response<TransactionDTO>> debitValueOfPlayer(
-            @RequestBody TransactionDTO transactionDTO,
+            @RequestBody @Valid TransactionDTO transactionDTO,
             @RequestParam(value = "player") Long id) {
         try {
             return ResponseEntity
@@ -55,7 +58,7 @@ public class TransactionController {
                     .body(new Response<>(this.transactionService.debitValueOfPlayer(id, transactionDTO)));
         } catch (Exception e) {
             throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
+                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -67,9 +70,9 @@ public class TransactionController {
      * @return The transaction Information after the execution
      */
     @ApiOperation(value = "Create a new Transaction to Credit value to a player")
-    @PostMapping(value = "/credit")
+    @PostMapping(value = "/credit", produces = "application/json", consumes = "application/json")
     public ResponseEntity<Response<TransactionDTO>> creditValueOfPlayer(
-            @RequestBody TransactionDTO transactionDTO,
+            @RequestBody @Valid TransactionDTO transactionDTO,
             @RequestParam(value = "player") Long id) {
         try {
             return ResponseEntity
@@ -77,7 +80,7 @@ public class TransactionController {
                     .body(new Response<>(this.transactionService.creditValueOfPlayer(id, transactionDTO)));
         } catch (Exception e) {
             throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e.getCause());
+                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }

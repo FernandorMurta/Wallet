@@ -6,7 +6,7 @@ package fernando.murta.wallet.exceptions;
  */
 public class EnoughFundsException extends Exception {
 
-    private static final String _DEFAULT_MSG = "Enough Funds to this operation!";
+    private static final String _DEFAULT_MSG = "Not Enough Funds to this operation!";
 
     /**
      * Constructor
