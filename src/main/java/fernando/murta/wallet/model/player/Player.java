@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -38,6 +40,7 @@ public class Player implements Serializable {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @CreationTimestamp

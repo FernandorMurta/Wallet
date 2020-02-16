@@ -1,15 +1,19 @@
 package fernando.murta.wallet.rest.transaction;
 
+import fernando.murta.wallet.exceptions.PlayerNotFoundException;
 import fernando.murta.wallet.exceptions.EnoughFundsException;
 import fernando.murta.wallet.exceptions.InvalidArgumentsException;
 import fernando.murta.wallet.exceptions.InvalidTransactionTypeException;
-import fernando.murta.wallet.exceptions.PlayerNotFoundException;
+import fernando.murta.wallet.exceptions.NotUniqueTransactionUUIDException;
+import fernando.murta.wallet.model.transaction.Transaction;
 import fernando.murta.wallet.model.transaction.TransactionDTO;
 import fernando.murta.wallet.model.transaction.TransactionType;
 import fernando.murta.wallet.persistence.transaction.TransactionRepository;
 import fernando.murta.wallet.rest.player.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * @author Fernando Murta
@@ -43,22 +47,30 @@ public class TransactionServiceImpl implements TransactionService {
      * @param idOfPlayer     Id of the Player who will Debit the Credit
      * @param transactionDTO Information about the Transaction to Debit from the Player.
      * @return The transaction Information after the execution
-     * @throws InvalidTransactionTypeException if the Type from Transaction was different from the acceptedType
-     * @throws PlayerNotFoundException         If a Player was not found with the ID sent in parameter
-     * @throws InvalidArgumentsException       If the ID sent in Parameter was different of the id of Player sent in transactions DTO
-     * @throws EnoughFundsException            If the Value sent to the transaction was bigger then the balance of the Player
+     * @throws InvalidTransactionTypeException   if the Type from Transaction was different from the acceptedType
+     * @throws PlayerNotFoundException           If a Player was not found with the ID sent in parameter
+     * @throws InvalidArgumentsException         If the ID sent in Parameter was different of the id of Player sent in transactions DTO
+     * @throws EnoughFundsException              If the Value sent to the transaction was bigger then the balance of the Player
+     * @throws NotUniqueTransactionUUIDException If the UUID already have one Transaction Registered
      * @see TransactionType For information about the enum
      */
     public TransactionDTO debitValueOfPlayer(Long idOfPlayer, TransactionDTO transactionDTO)
-            throws InvalidTransactionTypeException, InvalidArgumentsException, PlayerNotFoundException, EnoughFundsException {
+            throws InvalidTransactionTypeException, InvalidArgumentsException,
+            PlayerNotFoundException, EnoughFundsException, NotUniqueTransactionUUIDException {
+
         this.verifyTransactionType(TransactionType.DEBIT, transactionDTO);
         this.verifyUser(idOfPlayer, transactionDTO);
 
         if (transactionDTO.getPlayer().getBalance().subtract(transactionDTO.getValue()).doubleValue() < 0.0) {
             throw new EnoughFundsException();
         }
+
+        this.verifyTransactionCode(transactionDTO);
+
         transactionDTO = TransactionDTO.fromEntity(this.transactionRepository.save(TransactionDTO.toEntity(transactionDTO)));
+
         this.updatePlayerAfterTransaction(transactionDTO);
+
         return transactionDTO;
     }
 
@@ -70,18 +82,24 @@ public class TransactionServiceImpl implements TransactionService {
      * @param idOfPlayer     Id of the Player who will Debit the Credit
      * @param transactionDTO Information about the Transaction to Debit from the Player.
      * @return The transaction Information after the execution
-     * @throws InvalidTransactionTypeException if the Type from Transaction was different from the acceptedType
-     * @throws PlayerNotFoundException         If a Player was not found with the ID sent in parameter
-     * @throws InvalidArgumentsException       If the ID sent in Parameter was different of the id of Player sent in transactions DTO
+     * @throws InvalidTransactionTypeException   if the Type from Transaction was different from the acceptedType
+     * @throws PlayerNotFoundException           If a Player was not found with the ID sent in parameter
+     * @throws InvalidArgumentsException         If the ID sent in Parameter was different of the id of Player sent in transactions DTO
+     * @throws NotUniqueTransactionUUIDException If the UUID already have one Transaction Registered
      * @see TransactionType For information about the enum
      */
     public TransactionDTO creditValueOfPlayer(Long idOfPlayer, TransactionDTO transactionDTO)
-            throws InvalidTransactionTypeException, InvalidArgumentsException, PlayerNotFoundException {
+            throws InvalidTransactionTypeException, InvalidArgumentsException,
+            PlayerNotFoundException, NotUniqueTransactionUUIDException {
+
         this.verifyTransactionType(TransactionType.CREDIT, transactionDTO);
         this.verifyUser(idOfPlayer, transactionDTO);
+        this.verifyTransactionCode(transactionDTO);
 
         transactionDTO = TransactionDTO.fromEntity(this.transactionRepository.save(TransactionDTO.toEntity(transactionDTO)));
+
         this.updatePlayerAfterTransaction(transactionDTO);
+
         return transactionDTO;
     }
 
@@ -139,5 +157,19 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         transactionDTO.setPlayer(this.playerService.updatePlayer(transactionDTO.getPlayer()));
+    }
+
+    /**
+     * Method to verify if the Transaction sent in the Request is a UNIQUE value
+     *
+     * @param transactionDTO Transaction Information sent
+     * @throws NotUniqueTransactionUUIDException If the UUID already have one Transaction Registered
+     */
+    private void verifyTransactionCode(TransactionDTO transactionDTO) throws NotUniqueTransactionUUIDException {
+        Optional<Transaction> transaction = this.transactionRepository.findByTransaction(transactionDTO.getTransaction());
+
+        if (transaction.isPresent()) {
+            throw new NotUniqueTransactionUUIDException();
+        }
     }
 }

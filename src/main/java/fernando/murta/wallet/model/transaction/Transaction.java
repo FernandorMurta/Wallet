@@ -17,6 +17,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -49,6 +51,7 @@ public class Transaction implements Serializable {
     @Column(columnDefinition = "DECIMAL(13,2)")
     private BigDecimal value;
 
+    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
 
     @ManyToOne
