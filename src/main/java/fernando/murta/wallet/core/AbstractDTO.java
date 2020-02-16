@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author Fernando Murta
@@ -16,7 +17,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(Include.NON_NULL)
-public class AbstractDTO implements Serializable {
+public abstract class AbstractDTO implements Serializable {
 
-	private String id;
+	private Long id;
+
+	private Date createdAt;
+
+	private Date updatedAt;
 }

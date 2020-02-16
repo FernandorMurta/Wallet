@@ -5,5 +5,6 @@ ARG JAR_FILE=target/*.jar
 ARG SPRING_DATASOURCE_URL=jdbc:mysql://localhos:3306/WALLET?useTimezone=true&serverTimezone=UTC
 ARG PRING_DATASOURCE_USERNAME=root
 ARG SPRING_DATASOURCE_PASSWORD=root
+ARG SPRING_DATABASE_DIALET=org.hibernate.dialect.MySQLDialect
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
