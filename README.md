@@ -32,11 +32,11 @@ java -jar target/wallet-0.0.1-SNAPSHOT.jar
 
 To see the List of Services go to
 
-[Swagger] (http://localhost:8080/api/swagger-ui.html)
+[Swagger](http://localhost:8080/api/swagger-ui.html)
 
 To access the database go to 
 
-[h2-console] (http://localhost:8080/api/h2-console)
+[h2-console](http://localhost:8080/api/h2-console)
 
 Properties to access the console
 ```bash
