@@ -47,7 +47,6 @@ user: sa
 password: password
 ```
 
-
 ## Examples
 
 Where is a link to download postman collection with some examples
@@ -81,3 +80,6 @@ Ex:
 If you want just to see the balance of one player
 
 [See in](http://localhost:8080/api/swagger-ui.html#/player-controller/getBalanceOfPlayerUsingGET)
+
+
+* All link (except postman collection) redirect you to the a page when the application goes up! 
