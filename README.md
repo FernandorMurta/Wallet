@@ -33,6 +33,7 @@ java -jar target/wallet-0.0.1-SNAPSHOT.jar
 To see the List of Services go to
 
 [Swagger](http://localhost:8080/api/swagger-ui.html)
+
 [Swagger api-doc](http://localhost:8080/api/v2/api-docs)
 
 To access the database go to 
@@ -54,7 +55,7 @@ Where is a link to download postman collection with some examples
 [Postman Collection](https://www.postman.com/collections/167fe548bbb47553e3ab)
 
 
-### Usage notes
+## Usage notes
 
 Remember the first thing to do is create a new Player to use the Wallet
 
