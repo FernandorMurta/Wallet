@@ -57,19 +57,26 @@ Where is a link to download postman collection with some examples
 ### Usage notes
 
 Remember the first thing to do is create a new Player to use the Wallet
+
 [See in](http://localhost:8080/api/swagger-ui.html#/player-controller/createPlayerUsingPOST)
 
 After that you can start to do some transaction (DEBIT/CREDIT)
+
 [See in - DEBIT](http://localhost:8080/api/swagger-ui.html#/transaction-controller/debitValueOfPlayerUsingPOST)
+
 [See in - CREDIT](http://localhost:8080/api/swagger-ui.html#/transaction-controller/creditValueOfPlayerUsingPOST)
+
 When user was created, he have a balance of 0.00.
 
 To see all Transaction History of the user remember to put the TransactionType in the parameters
+
 [See in](http://localhost:8080/api/swagger-ui.html#/transaction-controller/findAllWithParametersUsingGET)
+
 Ex: 
 - To see only Debit  -> transactionType=DEBIT
 - To see only Credit -> transactionType=CREDIT
 - To see both type of transaction -> transactionType=DEBIT,CREDIT
 
 If you want just to see the balance of one player
+
 [See in](http://localhost:8080/api/swagger-ui.html#/player-controller/getBalanceOfPlayerUsingGET)
